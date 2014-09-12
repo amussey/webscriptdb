@@ -1,4 +1,6 @@
 local print_r = require "amussey/lib/lua/print_r"
+local dbName = request.path .. '-db'
+
 
 function response_error(message)
     return {["response"]="error", ["message"]=message}
@@ -55,25 +57,25 @@ end
 
 -- GET    = read
 -- POST   = write
--- PUT    = update
+-- PATCH  = update
 -- DELETE = delete
 if request.method == "GET" then
-    return "read"
+    return 'read' -- Database:read(request)
 elseif request.method == "POST" then
     if not dbwrite then
         return response_error("Insufficient permissions to insert.")
     end
-    return "write"
-elseif request.method == "PUT" then
+    return 'write' -- Database:write(request)
+elseif request.method == "PATCH" then
     if not dbwrite then
         return response_error("Insufficient permissions to update.")
     end
-    return "update"
+    return 'update' -- Database:update(request)
 elseif request.method == "DELETE" then
     if not dbwrite then
         return response_error("Insufficient permissions to delete.")
     end
-    return "delete"
+    return 'delete' -- Database:delete(request)
 end
 
 
